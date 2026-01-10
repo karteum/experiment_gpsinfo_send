@@ -12,7 +12,9 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sendButton: MaterialButton
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var statusText: TextView
+    private lateinit var prioritySpinner: Spinner
 
     private var currentLocation: Location? = null
     private var currentTime: String = ""
@@ -57,6 +60,13 @@ class MainActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.sendButton)
         loadingIndicator = findViewById(R.id.loadingIndicator)
         statusText = findViewById(R.id.statusText)
+        prioritySpinner = findViewById(R.id.prioritySpinner)
+
+        // Set up priority spinner
+        val priorities = resources.getStringArray(R.array.priority_options)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, priorities)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        prioritySpinner.adapter = adapter
 
         // Initialize preferences manager
         preferencesManager = PreferencesManager.getInstance(this)
@@ -235,8 +245,15 @@ class MainActivity : AppCompatActivity() {
         val phoneNumber = preferencesManager.getPhoneNumber()
         val targetEmail = preferencesManager.getTargetEmail()
 
-        // Build email body
+        // Get selected priority
+        val selectedPriority = prioritySpinner.selectedItem.toString()
+
+        // Build email subject with priority
+        val emailSubject = "[$selectedPriority] ${getString(R.string.email_subject)}"
+
+        // Build email body with priority
         val emailBody = """
+            Priority: $selectedPriority
             GPS Position Report
 
             MMSI: $mmsi
@@ -253,7 +270,7 @@ class MainActivity : AppCompatActivity() {
         val emailIntent = Intent(Intent.ACTION_SEND).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(targetEmail))
-            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
+            putExtra(Intent.EXTRA_SUBJECT, emailSubject)
             putExtra(Intent.EXTRA_TEXT, emailBody)
         }
 

@@ -42,4 +42,13 @@
     <string name="permission_rationale_message">This app needs location permission to track and send your GPS coordinates.</string>
     <string name="permission_settings">Open Settings</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Priority -->
+    <string name="priority_label">Priority:</string>
+    <string-array name="priority_options">
+        <item>ROUTINE</item>
+        <item>SECURITE</item>
+        <item>PANPAN</item>
+        <item>MAYDAY</item>
+    </string-array>
 </resources>
