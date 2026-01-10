@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">GPS Tracker</string>
+
+    <!-- Main Activity -->
+    <string name="latitude_label">Latitude:</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="time_label">Time:</string>
+    <string name="send_button">SEND</string>
+    <string name="acquiring_gps">Acquiring GPS location...</string>
+    <string name="no_location">No location available</string>
+
+    <!-- Settings Activity -->
+    <string name="settings_title">Settings</string>
+    <string name="mmsi_label">MMSI</string>
+    <string name="mmsi_hint">Enter MMSI number</string>
+    <string name="phone_label">Phone Number</string>
+    <string name="phone_hint">Enter phone number</string>
+    <string name="email_label">Target Email</string>
+    <string name="email_hint">Enter recipient email address</string>
+    <string name="save_button">SAVE</string>
+    <string name="settings_saved">Settings saved successfully</string>
+
+    <!-- Menu -->
+    <string name="menu_settings">Settings</string>
+
+    <!-- Email -->
+    <string name="email_subject">GPS Position Report</string>
+    <string name="email_chooser_title">Send email via...</string>
+
+    <!-- Errors and warnings -->
+    <string name="error_settings_required">Please configure settings first</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_required_field">This field is required</string>
+    <string name="error_location_permission_denied">Location permission is required to track GPS</string>
+    <string name="error_no_email_app">No email app found</string>
+    <string name="error_getting_location">Error getting location. Please try again.</string>
+
+    <!-- Permissions -->
+    <string name="permission_rationale_title">Location Permission Required</string>
+    <string name="permission_rationale_message">This app needs location permission to track and send your GPS coordinates.</string>
+    <string name="permission_settings">Open Settings</string>
+    <string name="cancel">Cancel</string>
+</resources>
