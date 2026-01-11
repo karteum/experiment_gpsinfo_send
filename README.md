@@ -6,6 +6,7 @@ This repository is a first experiment with Claude code. The used prompts are in 
 * `Can you add 1°/ an entry with "MRCC phone number" in the settings, and 2°/ on the main window, a button "call" that would trigger linphone (assuming linphone is previously pre-installed with the proper settings) in order to call the MRCC with the aforementioned MRCC phone number settings`
 
 After compilation this gives the following
+
 ![screen1](screen1.png) ![screen2](screen2.png)
 
 All what follows was written by Claude!
