@@ -5,6 +5,8 @@ This repository is a first experiment with Claude code. The used prompts are in 
 * `In the main window (above "send" button), can you add a combo box with the following options: ["ROUTINE", "SECURITE", "PANPAN", "MAYDAY"], and have the email include that choice both in the subject and in the body of the email ?`
 * `Can you add 1°/ an entry with "MRCC phone number" in the settings, and 2°/ on the main window, a button "call" that would trigger linphone (assuming linphone is previously pre-installed with the proper settings) in order to call the MRCC with the aforementioned MRCC phone number settings`
 
+**The code is placed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) license, which means it comes without any warranty of any kind. It may contain bugs, malfunctions, behave incorrectly : use it at your own risk !**
+
 After compilation this gives the following
 
 ![screen1](screen1.png) ![screen2](screen2.png)
