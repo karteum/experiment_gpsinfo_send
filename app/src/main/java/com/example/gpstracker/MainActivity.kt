@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var longitudeValue: TextView
     private lateinit var timeValue: TextView
     private lateinit var sendButton: MaterialButton
+    private lateinit var callButton: MaterialButton
     private lateinit var loadingIndicator: ProgressBar
     private lateinit var statusText: TextView
     private lateinit var prioritySpinner: Spinner
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        private const val CALL_PERMISSION_REQUEST_CODE = 1002
         private const val LOCATION_UPDATE_INTERVAL = 5000L // 5 seconds
         private const val LOCATION_FASTEST_INTERVAL = 2000L // 2 seconds
     }
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         longitudeValue = findViewById(R.id.longitudeValue)
         timeValue = findViewById(R.id.timeValue)
         sendButton = findViewById(R.id.sendButton)
+        callButton = findViewById(R.id.callButton)
         loadingIndicator = findViewById(R.id.loadingIndicator)
         statusText = findViewById(R.id.statusText)
         prioritySpinner = findViewById(R.id.prioritySpinner)
@@ -80,6 +83,11 @@ class MainActivity : AppCompatActivity() {
         // Set up send button
         sendButton.setOnClickListener {
             sendEmail()
+        }
+
+        // Set up call button
+        callButton.setOnClickListener {
+            callMRCC()
         }
 
         // Check and request location permission
@@ -158,11 +166,21 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startLocationUpdates()
-            } else {
-                showPermissionDeniedDialog()
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startLocationUpdates()
+                } else {
+                    showPermissionDeniedDialog()
+                }
+            }
+            CALL_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, retry the call
+                    callMRCC()
+                } else {
+                    Toast.makeText(this, "Call permission is required to make calls", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -278,6 +296,62 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)))
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, R.string.error_no_email_app, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun callMRCC() {
+        // Get MRCC phone number from settings
+        val mrccPhone = preferencesManager.getMRCCPhone()
+
+        if (mrccPhone.isEmpty()) {
+            Toast.makeText(this, R.string.error_mrcc_phone_required, Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return
+        }
+
+        // Check for CALL_PHONE permission
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Request permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CALL_PHONE),
+                CALL_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+
+        // Make the call
+        makeCall(mrccPhone)
+    }
+
+    private fun makeCall(phoneNumber: String) {
+        // Create intent to trigger Linphone with tel: URI
+        val callIntent = Intent(Intent.ACTION_CALL).apply {
+            data = Uri.parse("tel:$phoneNumber")
+            // Try to specifically target Linphone if possible
+            setPackage("org.linphone")
+        }
+
+        try {
+            startActivity(callIntent)
+        } catch (e: ActivityNotFoundException) {
+            // If Linphone is not found, try without package specification
+            try {
+                val generalCallIntent = Intent(Intent.ACTION_CALL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                }
+                startActivity(generalCallIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, R.string.error_linphone_not_found, Toast.LENGTH_LONG).show()
+            } catch (e: SecurityException) {
+                Toast.makeText(this, "Permission to make calls is required", Toast.LENGTH_LONG).show()
+            }
+        } catch (e: SecurityException) {
+            Toast.makeText(this, "Permission to make calls is required", Toast.LENGTH_LONG).show()
         }
     }
 

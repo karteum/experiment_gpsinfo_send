@@ -8,6 +8,9 @@
     <!-- Permission for email (not strictly required for Intent-based email) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permission for making phone calls -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

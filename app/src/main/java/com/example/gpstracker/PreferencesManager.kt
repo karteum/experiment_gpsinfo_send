@@ -12,6 +12,7 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_MMSI = "mmsi"
         private const val KEY_PHONE = "phone_number"
         private const val KEY_EMAIL = "target_email"
+        private const val KEY_MRCC_PHONE = "mrcc_phone_number"
 
         @Volatile
         private var instance: PreferencesManager? = null
@@ -36,6 +37,10 @@ class PreferencesManager private constructor(context: Context) {
         prefs.edit().putString(KEY_EMAIL, email).apply()
     }
 
+    fun saveMRCCPhone(mrccPhone: String) {
+        prefs.edit().putString(KEY_MRCC_PHONE, mrccPhone).apply()
+    }
+
     // Get methods
     fun getMMSI(): String {
         return prefs.getString(KEY_MMSI, "") ?: ""
@@ -47,6 +52,10 @@ class PreferencesManager private constructor(context: Context) {
 
     fun getTargetEmail(): String {
         return prefs.getString(KEY_EMAIL, "") ?: ""
+    }
+
+    fun getMRCCPhone(): String {
+        return prefs.getString(KEY_MRCC_PHONE, "") ?: ""
     }
 
     // Check if all settings are configured

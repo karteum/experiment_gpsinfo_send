@@ -15,10 +15,12 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var mmsiInputLayout: TextInputLayout
     private lateinit var phoneInputLayout: TextInputLayout
     private lateinit var emailInputLayout: TextInputLayout
+    private lateinit var mrccPhoneInputLayout: TextInputLayout
 
     private lateinit var mmsiInput: TextInputEditText
     private lateinit var phoneInput: TextInputEditText
     private lateinit var emailInput: TextInputEditText
+    private lateinit var mrccPhoneInput: TextInputEditText
 
     private lateinit var saveButton: MaterialButton
 
@@ -36,10 +38,12 @@ class SettingsActivity : AppCompatActivity() {
         mmsiInputLayout = findViewById(R.id.mmsiInputLayout)
         phoneInputLayout = findViewById(R.id.phoneInputLayout)
         emailInputLayout = findViewById(R.id.emailInputLayout)
+        mrccPhoneInputLayout = findViewById(R.id.mrccPhoneInputLayout)
 
         mmsiInput = findViewById(R.id.mmsiInput)
         phoneInput = findViewById(R.id.phoneInput)
         emailInput = findViewById(R.id.emailInput)
+        mrccPhoneInput = findViewById(R.id.mrccPhoneInput)
 
         saveButton = findViewById(R.id.saveButton)
 
@@ -56,6 +60,7 @@ class SettingsActivity : AppCompatActivity() {
         mmsiInput.setText(preferencesManager.getMMSI())
         phoneInput.setText(preferencesManager.getPhoneNumber())
         emailInput.setText(preferencesManager.getTargetEmail())
+        mrccPhoneInput.setText(preferencesManager.getMRCCPhone())
     }
 
     private fun saveSettings() {
@@ -63,11 +68,13 @@ class SettingsActivity : AppCompatActivity() {
         mmsiInputLayout.error = null
         phoneInputLayout.error = null
         emailInputLayout.error = null
+        mrccPhoneInputLayout.error = null
 
         // Get values
         val mmsi = mmsiInput.text.toString().trim()
         val phone = phoneInput.text.toString().trim()
         val email = emailInput.text.toString().trim()
+        val mrccPhone = mrccPhoneInput.text.toString().trim()
 
         // Validate inputs
         var isValid = true
@@ -90,6 +97,8 @@ class SettingsActivity : AppCompatActivity() {
             isValid = false
         }
 
+        // MRCC phone is optional, no validation required
+
         if (!isValid) {
             return
         }
@@ -98,6 +107,7 @@ class SettingsActivity : AppCompatActivity() {
         preferencesManager.saveMMSI(mmsi)
         preferencesManager.savePhoneNumber(phone)
         preferencesManager.saveTargetEmail(email)
+        preferencesManager.saveMRCCPhone(mrccPhone)
 
         // Show success message
         Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show()
