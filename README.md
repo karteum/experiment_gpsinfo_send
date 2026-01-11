@@ -1,3 +1,15 @@
+# MMSI and GPS sending App
+
+This repository is a first experiment with Claude code. The used prompts are in the commit messages, and the 3 first ones were:
+* `Can you create an android app that would have 1°/ settings (with fields "MMSI", "phone number", "target email"), 2°/ a main display that would show latitude/longitude/time from GPS, and a "SEND" button that would send an email to the aforementioned "target email" together with the MMSI, phone number, latitude, longitude, time informations`
+* `In the main window (above "send" button), can you add a combo box with the following options: ["ROUTINE", "SECURITE", "PANPAN", "MAYDAY"], and have the email include that choice both in the subject and in the body of the email ?`
+* `Can you add 1°/ an entry with "MRCC phone number" in the settings, and 2°/ on the main window, a button "call" that would trigger linphone (assuming linphone is previously pre-installed with the proper settings) in order to call the MRCC with the aforementioned MRCC phone number settings`
+
+After compilation this gives the following
+![screen1](screen1.png) ![screen2](screen2.png)
+
+All what follows was written by Claude!
+
 # GPS Tracker Android App
 
 An Android application that tracks GPS location and sends position reports via email.
